@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Course {
     String courseID;
     String name;
-    String major;
+    ArrayList<String> majors;
     int startTime;
     int endTime;
     String day;
@@ -14,6 +15,7 @@ public class Course {
     public Course(String name, String courseID){
         this.name = name;
         this.courseID = courseID;
+        this.majors = new ArrayList<>();
         this.GEs = new ArrayList<>();
         this.prerequisites = new ArrayList<>();
     }
@@ -22,18 +24,28 @@ public class Course {
         return this.courseID;
     }
     
-    public String getMajor(){
-        return this.major;
+    public ArrayList<String> getMajors(){
+        return this.majors;
     }
     
-    public void setMajor(String major){
-        this.major = major;
+    public void setMajors(ArrayList<String> majors){
+        for (String major: majors){
+            this.majors.add(major);
+        } 
     }
     
     public String getTime(){
         String output = "";
         output += this.day + ": " + this.startTime + "-" + this.endTime + "\n";
         return output;
+    }
+
+    public int getStartTime(){
+        return this.startTime;
+    }
+
+    public int getEndTime(){
+        return this.endTime;
     }
 
     public void setStartTime(int startTime){
@@ -65,6 +77,7 @@ public class Course {
             this.GEs.add(ge);
         }
     }
+    
 
     public ArrayList<String> getPreReqs(){
         return this.prerequisites;
@@ -75,11 +88,23 @@ public class Course {
             this.prerequisites.add(prereq);
         }
     }
+    
+    public int hashCode(){
+        return Objects.hash(this.courseID); //shortcut
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Course other = (Course) obj;
+        return this.courseID.equals(other.courseID);
+    }
 
     @Override
     public String toString(){
         String output = "";
-        output = courseID + ": " + name + ";" + "Major: " + major + ";" + "Time: " + getTime() + ";" + "Campus :" + campus + ";" + "Areas fulfilled: " + GEs + ";" + "Prerequisites: " + prerequisites;
+        output = courseID + ": " + name + ";" + "Majors: " + majors + ";" + "Time: " + getTime() + ";" + "Campus :" + campus + ";" + "Areas fulfilled: " + GEs + ";" + "Prerequisites: " + prerequisites;
         return output;
     }
 }

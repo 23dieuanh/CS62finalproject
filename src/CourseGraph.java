@@ -1,30 +1,30 @@
 import java.util.*;
 
 public class CourseGraph{
-    private Map<String, ArrayList<String>> adjList;
+    private Map<Course, ArrayList<Course>> adjList;
 
     public CourseGraph(){
         adjList = new HashMap<>();
     }
 
-    public void addCourse(String course){
+    public void addCourse(Course course){
         if (!adjList.keySet().contains(course)){
-            adjList.put(course, new ArrayList<String>());
+            adjList.put(course, new ArrayList<Course>());
         }
     }
 
-    public void addDirectedEdge(String course1, String course2){
+    public void addDirectedEdge(Course course1, Course course2){
         if (adjList.keySet().contains(course1)){
              adjList.get(course1).add(course2);
         }
         else{
-            ArrayList<String> course1Value = new ArrayList<String>();
+            ArrayList<Course> course1Value = new ArrayList<Course>();
             course1Value.add(course2);
             adjList.put(course1, course1Value);
         }
     }
     
-    public ArrayList<String> getNextCourses(String course){
+    public ArrayList<Course> getNextCourses(Course course){
         if (adjList.keySet().contains(course)){
             return adjList.get(course);
         }
@@ -49,16 +49,16 @@ public class CourseGraph{
     // }
 
     public String showAllMajorCourses(){
-        Map<String, Integer> inDegree = new HashMap<>();
+        Map<Course, Integer> inDegree = new HashMap<>();
         
         // set every indegree to 0
-        for (String course : adjList.keySet()) {
+        for (Course course : adjList.keySet()) {
             inDegree.put(course, 0);
         }
 
-        for (String course : adjList.keySet()) {
-            ArrayList<String> neighbors = adjList.get(course); // courses that this course unlocks
-            for (String neighbor : neighbors) {
+        for (Course course : adjList.keySet()) {
+            ArrayList<Course> neighbors = adjList.get(course); // courses that this course unlocks
+            for (Course neighbor : neighbors) {
                 if (inDegree.containsKey(neighbor)) {
                     int current = inDegree.get(neighbor);
                     inDegree.put(neighbor, current + 1);
@@ -68,8 +68,8 @@ public class CourseGraph{
             } 
         }
         // add all courses w indegree 0 to queue (no prereq)
-        Queue<String> queue = new LinkedList<>();
-        for (String course : inDegree.keySet()) {
+        Queue<Course> queue = new LinkedList<>();
+        for (Course course : inDegree.keySet()) {
             if (inDegree.get(course) == 0) {
                 queue.add(course);
             }
@@ -78,14 +78,14 @@ public class CourseGraph{
         StringBuilder output = new StringBuilder();
 
         while (!queue.isEmpty()) {
-            String current = queue.poll();
-            output.append(current);
+            Course current = queue.poll();
+            output.append(current.courseID + ": " + current.name + "\n");
 
             // get all courses that require this as a prerequisite
-            ArrayList<String> neighbors = adjList.get(current);
+            ArrayList<Course> neighbors = adjList.get(current);
 
             // for each of those neighbor courses, subtract 1 from their indegree
-            for (String neighbor : neighbors) {
+            for (Course neighbor : neighbors) {
                 int newInDegree = inDegree.get(neighbor) - 1;
                 inDegree.put(neighbor, newInDegree);
 
@@ -102,23 +102,23 @@ public class CourseGraph{
         CourseGraph graph = new CourseGraph();
 
         // sample courses
-        graph.addCourse("CS051");
-        graph.addCourse("CS054");
-        graph.addCourse("CS062");
-        graph.addCourse("CS0140");
+        // graph.addCourse("CS051");
+        // graph.addCourse("CS054");
+        // graph.addCourse("CS062");
+        // graph.addCourse("CS0140");
 
-        // add prereqs
-        graph.addDirectedEdge("CS051", "CS054");
-        graph.addDirectedEdge("CS054", "CS062");
-        graph.addDirectedEdge("CS062", "CS0140");
+        // // add prereqs
+        // graph.addDirectedEdge("CS051", "CS054");
+        // graph.addDirectedEdge("CS054", "CS062");
+        // graph.addDirectedEdge("CS062", "CS0140");
 
-        System.out.println("Adjacency List:");
-        for (String course : graph.adjList.keySet()) {
-            ArrayList<String> nextCourses = graph.getNextCourses(course);
-            System.out.println(course + "->" + nextCourses);
-        }
+        // System.out.println("Adjacency List:");
+        // for (String course : graph.adjList.keySet()) {
+        //     ArrayList<String> nextCourses = graph.getNextCourses(course);
+        //     System.out.println(course + "->" + nextCourses);
+        // }
 
-        System.out.println(graph.showAllMajorCourses());
+        // System.out.println(graph.showAllMajorCourses());
 
     }
 }
