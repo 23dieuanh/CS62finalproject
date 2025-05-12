@@ -10,7 +10,7 @@ public class Course {
     String day;
     String campus;
     ArrayList<String> GEs;
-    ArrayList<String> prerequisites;
+    ArrayList<ArrayList<String>> prerequisites = new ArrayList<>();
     
     public Course(String name, String courseID){
         this.name = name;
@@ -79,13 +79,13 @@ public class Course {
     }
     
 
-    public ArrayList<String> getPreReqs(){
+    public ArrayList<ArrayList<String>> getPreReqs(){
         return this.prerequisites;
     }
 
-    public void setPreReqs(ArrayList<String> prerequisites){
-        for (String prereq: prerequisites){
-            this.prerequisites.add(prereq);
+    public void setPreReqs(ArrayList<ArrayList<String>> prerequisites){
+        for (ArrayList<String> prereqGroup: prerequisites){
+            this.prerequisites.add(prereqGroup);
         }
     }
     
@@ -104,7 +104,7 @@ public class Course {
     @Override
     public String toString(){
         String output = "";
-        output = courseID + ": " + name + ";" + "Majors: " + majors + ";" + "Time: " + getTime() + ";" + "Campus :" + campus + ";" + "Areas fulfilled: " + GEs + ";" + "Prerequisites: " + prerequisites;
+        output = courseID + ": " + name + ";" + "Majors: " + majors + ";" + "Time: " + getTime() + ";" + "Campus :" + campus + ";" + "Areas fulfilled: " + GEs + ";" + "Prerequisites: " + prerequisites + "\n";
         return output;
     }
 }

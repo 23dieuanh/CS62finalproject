@@ -1,9 +1,15 @@
 import java.util.*;
 
 public class CourseGraph{
-    private Map<Course, ArrayList<Course>> adjList;
+    public String majorArea;
+    public Map<Course, ArrayList<Course>> adjList;
 
     public CourseGraph(){
+        adjList = new HashMap<>();
+    }
+
+    public CourseGraph(String majorArea){
+        this.majorArea = majorArea;
         adjList = new HashMap<>();
     }
 
@@ -48,55 +54,80 @@ public class CourseGraph{
         
     // }
 
-    public String showAllMajorCourses(){
-        Map<Course, Integer> inDegree = new HashMap<>();
+    public void showAllMajorCourses(){
         
-        // set every indegree to 0
+        System.out.println("The courses for the " + majorArea + " major (ordered by prerequisite relations)");
+        System.out.println("--------------------------------------------------------------------------------");
+        
+        
         for (Course course : adjList.keySet()) {
-            inDegree.put(course, 0);
-        }
-
-        for (Course course : adjList.keySet()) {
-            ArrayList<Course> neighbors = adjList.get(course); // courses that this course unlocks
-            for (Course neighbor : neighbors) {
-                if (inDegree.containsKey(neighbor)) {
-                    int current = inDegree.get(neighbor);
-                    inDegree.put(neighbor, current + 1);
-                } else {
-                    inDegree.put(neighbor, 1);
-                }
-            } 
-        }
-        // add all courses w indegree 0 to queue (no prereq)
-        Queue<Course> queue = new LinkedList<>();
-        for (Course course : inDegree.keySet()) {
-            if (inDegree.get(course) == 0) {
-                queue.add(course);
+            ArrayList<Course> nextCourses = adjList.get(course);
+            if (nextCourses.size() == 0) {
+                System.out.print(course.getID());
             }
-        }
-
-        StringBuilder output = new StringBuilder();
-
-        while (!queue.isEmpty()) {
-            Course current = queue.poll();
-            output.append(current.courseID + ": " + current.name + "\n");
-
-            // get all courses that require this as a prerequisite
-            ArrayList<Course> neighbors = adjList.get(current);
-
-            // for each of those neighbor courses, subtract 1 from their indegree
-            for (Course neighbor : neighbors) {
-                int newInDegree = inDegree.get(neighbor) - 1;
-                inDegree.put(neighbor, newInDegree);
-
-                // if a course now has in-degree 0, all prereqs are done so add to queue
-                if (newInDegree == 0) {
-                    queue.add(neighbor);
+            else {
+                String line = "";
+                line += course.getID() + " -> ";
+                for (int i = 0; i < nextCourses.size(); i++) {
+                    line += nextCourses.get(i).getID();
+                    if (i < nextCourses.size() - 1) {
+                        line += ", ";
+                    }
                 }
+                System.out.println(line);
             }
-        }
-        return output.toString();
-    }
+            }
+    }    
+            
+        
+        
+    //     Map<Course, Integer> inDegree = new HashMap<>();
+        
+    //     // set every indegree to 0
+    //     for (Course course : adjList.keySet()) {
+    //         inDegree.put(course, 0);
+    //     }
+
+    //     for (Course course : adjList.keySet()) {
+    //         ArrayList<Course> neighbors = adjList.get(course); // courses that this course unlocks
+    //         for (Course neighbor : neighbors) {
+    //             if (inDegree.containsKey(neighbor)) {
+    //                 int current = inDegree.get(neighbor);
+    //                 inDegree.put(neighbor, current + 1);
+    //             } else {
+    //                 inDegree.put(neighbor, 1);
+    //             }
+    //         } 
+    //     }
+    //     // add all courses w indegree 0 to queue (no prereq)
+    //     Queue<Course> queue = new LinkedList<>();
+    //     for (Course course : inDegree.keySet()) {
+    //         if (inDegree.get(course) == 0) {
+    //             queue.add(course);
+    //         }
+    //     }
+
+    //     StringBuilder output = new StringBuilder();
+
+    //     while (!queue.isEmpty()) {
+    //         Course current = queue.poll();
+    //         output.append(current.courseID + ": " + current.name + "\n");
+
+    //         // get all courses that require this as a prerequisite
+    //         ArrayList<Course> neighbors = adjList.get(current);
+
+    //         // for each of those neighbor courses, subtract 1 from their indegree
+    //         for (Course neighbor : neighbors) {
+    //             int newInDegree = inDegree.get(neighbor) - 1;
+    //             inDegree.put(neighbor, newInDegree);
+
+    //             // if a course now has in-degree 0, all prereqs are done so add to queue
+    //             if (newInDegree == 0) {
+    //                 queue.add(neighbor);
+    //             }
+    //         }
+    //     }
+       
 
     public static void main(String[] args) {
         CourseGraph graph = new CourseGraph();

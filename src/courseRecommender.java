@@ -24,7 +24,7 @@ public class courseRecommender {
     }
 
     // Assign scores to eligible scores based on user preferences
-    public void assignScore(ArrayList<Course> eligibleCourses, Set<String> preferredGEs, Set<String> preferredCampuses) {
+    public void assignScore(ArrayList<Course> eligibleCourses) {
         for (Course c : eligibleCourses) {
             int score = 0;
      

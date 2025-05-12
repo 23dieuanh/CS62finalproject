@@ -1,0 +1,8 @@
+ECON
+CSCI
+MATH
+ECON051
+1A6
+morning
+PO
+major
