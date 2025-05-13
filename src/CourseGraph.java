@@ -57,15 +57,16 @@ public class CourseGraph{
     public void showAllMajorCourses(){
         
         System.out.println("The courses for the " + majorArea + " major (ordered by prerequisite relations)");
-        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("-------------------------------");
         
         
         for (Course course : adjList.keySet()) {
             ArrayList<Course> nextCourses = adjList.get(course);
             if (nextCourses.size() == 0) {
-                System.out.print(course.getID());
+                System.out.print(course.getID() + "\n");
             }
             else {
+                // System.out.println(adjList);
                 String line = "";
                 line += course.getID() + " -> ";
                 for (int i = 0; i < nextCourses.size(); i++) {

@@ -25,7 +25,7 @@ public class easyStration{
         }
         
         try {
-            Scanner scan = new Scanner(new File("finalproject_dataset.txt"));
+            Scanner scan = new Scanner(new File("tester2.txt"));
             while(scan.hasNextLine()) {
                 String line = scan.nextLine();
                 String[] parts = line.split(" ");
@@ -40,22 +40,20 @@ public class easyStration{
                 ArrayList<String> GEs = new ArrayList<>();
                 ArrayList<String> majorAreas = new ArrayList<>();
 
-                for (String tag : tags) {
-                    tag = tag.trim(); // Clean whitespace
-
-                    // General Education tags start with a digit like '1A2', '2FYA', etc.
-                    if (!tag.isEmpty() && Character.isDigit(tag.charAt(0))) {
-                        GEs.add(tag);
+                for (int i = 0; i < tags.length; i++){
+                    String tag = tags[i];
+                    char firstChar = tags[i].charAt(0);
+                    if (firstChar >= '1' && firstChar <= '9') {
+                        GEs.add(tags[i]);
                     } else {
-                        majorAreas.add(tag); // Assume all non-digit-starting tags are majors
+                        majorAreas.add(tags[i]);
                     }
                 }
             c.setGEs(GEs);
             c.setMajors(majorAreas);
-            System.out.println("Parsed majors for " + c.getID() + ": " + majorAreas);
-
 
             String prereqField = parts[11];
+            
             System.out.println(prereqField);
             
             ArrayList<ArrayList<String>> prereqs = new ArrayList<>();
@@ -103,21 +101,20 @@ public class easyStration{
                 ArrayList<String> majors = course.getMajors();
                 for (int i = 0; i < majors.size(); i++){
                     String major = course.getMajors().get(i);
-                    if (!allMajorCourses.containsKey(major)) {
+                    if (!allMajorCourses.keySet().contains(major)) {
                         allMajorCourses.put(major, new CourseGraph(major));
                     }
-                    allMajorCourses.get(major).addCourse(course);
-
-
-
+                    else{
+                        allMajorCourses.get(major).addCourse(course);
+                    }
                     for (ArrayList<String> prereqGroup : course.getPreReqs()){
                         for (String prereqID: prereqGroup){
                             Course prereq = courseArray.get(prereqID);
                             if (prereq != null) {
-                                allMajorCourses.get(major).addCourse(prereq); // ← ensures the node exists
-                                allMajorCourses.get(major).addDirectedEdge(prereq, course);
+                                allMajorCourses.get(major).addCourse(prereq);
                                 allMajorCourses.get(major).addDirectedEdge(prereq, course);
                             }
+                        }
                     }
                 }
             }
@@ -133,8 +130,8 @@ public class easyStration{
     if (!courseArray.containsKey(userCourse)){
         System.out.println("Course not found");
     } else {
-        Course checkedCourse = courseArray.get(userCourse);
-        if (checkEligibility(checkedCourse)) {
+        Course course = courseArray.get(userCourse);
+        if (checkEligibility(course)) {
             System.out.println("You are eligible to take " + userCourse);
         } else {
             System.out.println("You are not eligible to take " + userCourse);
@@ -171,10 +168,17 @@ public class easyStration{
         recommendCourses(recNum);
     }
     
+    //Feature 4: How many major classes are left
+    System.out.println("Would you like to see your remaining major classes? \n");
+    String response2 = inputScanner.nextLine().trim();
+    if (response2.equals("yes")){
+        remainingCourses();
+    }
+    else{
+        System.out.println("Ok, good luck with registration!");
+    }
 
-
-
-    inputScanner.close();}
+    inputScanner.close();
 
 
     
@@ -197,7 +201,7 @@ public class easyStration{
         ArrayList<String> courseHistoryList = new ArrayList<>(Arrays.asList(courseHistory.split(",")));
         for (ArrayList<String> prereqGroup: prereqs){
             int count = 0;
-            for (String prereq: prereqGroup){
+	        for (String prereq: prereqGroup){
                 if (courseHistoryList.contains(prereq)){
                     continue;
                 }   
@@ -234,7 +238,8 @@ public class easyStration{
         System.out.println("\nTop " + recNum + " Course Recommendations:");
         int count = 0;
         while (!ranked.isEmpty() && count < recNum) {
-            System.out.println((count + 1) + ", " + ranked.poll());
+            Course recommended = ranked.poll();
+            System.out.println((count + 1) + ", " + recommended.getID() + ": " + recommended.getName() + "; " + recommended.getTime());
             count++;
         }
 
@@ -283,7 +288,7 @@ public class easyStration{
                 }
             }
             System.out.println("Remaining courses for " + area + ":");
-            if (remaining.size() == 0) {
+            if (remaining.isEmpty()) {
                 System.out.println("You've completed all required courses for " + area + "!");
             } else {
                 for (Course c : remaining) {
@@ -297,3 +302,4 @@ public class easyStration{
         }
     }
 }
+

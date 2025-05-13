@@ -23,6 +23,10 @@ public class Course {
     public String getID(){
         return this.courseID;
     }
+
+    public String getName(){
+        return this.name;
+    }
     
     public ArrayList<String> getMajors(){
         return this.majors;
