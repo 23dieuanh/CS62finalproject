@@ -57,8 +57,10 @@
                  ArrayList<String> majorAreas = new ArrayList<>();
  
                  for (String tag : tags) {
+                    // GEs always begin with a number
                      if (Character.isDigit(tag.charAt(0))) {
                          GEs.add(tag);
+                    // rest indicates fulfilled major area
                      } else {
                          majorAreas.add(tag);
                      }
@@ -118,6 +120,7 @@
                  System.out.println("Course not found");
              } else {
                  Course course = courseArray.get(userCourse);
+                 //calls helper function
                  if (checkEligibility(course)) {
                      System.out.println("You are eligible to take " + userCourse);
                  } else {
@@ -157,6 +160,7 @@
          if (recNum < 0 || recNum > courseArray.size()) {
              System.out.println("Invalid number");
          } else {
+            //calls helper function
              recommendCourses(recNum);
          }
  
@@ -164,6 +168,7 @@
          System.out.println("Would you like to see the remaining classes you can take in your indicated major(s)? \n");
          String response2 = inputScanner.nextLine().trim();
          if (response2.equals("yes")) {
+            //calls helper function
              remainingCourses();
              System.out.println("========================");
              System.out.println("Good luck with registration!");
@@ -213,6 +218,7 @@
      public static void recommendCourses(int recNum) {
          ArrayList<Course> eligibleCourses = new ArrayList<>();
          for (Course c : courseArray.values()) {
+            //calls helper function
              if (checkEligibility(c) && !userInput.get(3).contains(c.getID())) {
                  eligibleCourses.add(c);
              }
@@ -259,6 +265,7 @@
              for (Course course : graph.adjList.keySet()) {
                  if (takenCourses.contains(course.getID())) continue;
                  remaining.add(course);
+                 //calls helper function
                  if (checkEligibility(course)) {
                      eligibleNextCourses.add(course);
                  }
