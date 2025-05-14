@@ -106,6 +106,73 @@ CHEM191
 
 Which is a list of all chemistry courses and the courses for which they are prerequisites, if any. Note that it is normal for courses from other areas (such as math and biology) to also appear if they help fulfill the chemistry major in some way. 
 
+After you've seen your course eligibility and explored major-specific courses, our third feature helps you figure out what to actually take next semester. Based on the input file you initially provided (your majors, GEs left, preferred campuses and times, and whether you're prioritizing major or GE requirements), the system will ask:
+```text
+How many courses would you like us to recommend?
+```
+Let's say you're running the program with your Input.txt that looks like this:
+```text
+ECON
+CSCI
+MATH
+ECON051
+1A6
+morning,afternoon
+PO
+major
+```
+After you input a number, the system will calculate the best options for you out of all eligible courses and print a ranked list using our course scoring system. Here's an example output:
+```text
+Top 3 Course Recommendations:
+1, ECON143: EconomicsandFilm; --T-R--: 0810-0925
+2, CSCI051: IntroductiontoComputerScience; -M-W-F-: 1300-1350
+3, ECON123: InternationalEconomics; --T-R--: 1445-1600
+```
+If there are no courses you're eligible for, easyStration will return:
+```test
+Top 3 Course Recommendations:
+No eligible courses found.
+```
+This means the system has:
+- Filtered for courses you're eligible for based on having taken ECON051,
+- Ranked courses that help you ECON/CSCI majors higher (since you selected "major")
+- Prioritized classes at Pomona in the morning or afternoon,
+- And only returned ones you haven't already completed.
+This feature is perfect if you're overwhelmed by the number of classes out there and just want a clear, personalized list of what to take. And because the system filters out ineligible courses, you know that everything on the list is actually within reach.
+
+The final feature helps you look ahead: it tells you which major and minor courses you still need to complete, and which of those you're currently eligible to take. This is especially useful when planning future semesters or tracking your graduation progress.
+EasyStration will ask:
+```text
+Would you like to see your remaining major classes?
+```
+If you respond yes, it will return a breakdown by major and minor (if applicable). Here are two example outputs:
+**Example 1 - ECON Major**
+```text
+Remaining courses for ECON:
+- ECON101: MacroeconomicTheory
+- ECON107: AppliedEconometrics
+- ECON123: InternationalEconomics
+- ECON132: EmpiricalMethodsofIO
+
+Out of those, the courses you are currently eligible for are:
+- ECON123: InternationalEconomics
+```
+**Example 2 - CSCI Major**
+```text
+Remaining courses for CSCI:
+- CSCI054: DiscreteMathandFunc.Prog.
+- CSCI062: DataStructuresAdvProgramming
+- CSCI101: IntrotoLanguagesandTheory
+- CSCI140: OperaingSystems
+
+Out of those, the courses you are currently eligible for are:
+- CSCI054: DiscreteMathandFunc.Prog.
+```
+If you've already completed all required courses for a major or minor, EasyStration will let you know for example:
+```text
+You've completed all required courses for MATH!
+```
+This final step provides a big-picture view so you not only know what to register for now, but also where you're headed.
 
 # EasyStration Public API
 
