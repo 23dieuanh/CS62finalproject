@@ -1,156 +1,82 @@
-import java.util.*;
+/**
+ * The CourseGraph class represents a directed graph of courses within a major area.
+ * Each node is an object of type Course, and directed edges point from a prerequisite course to the courses it enables.
+ */
 
-public class CourseGraph{
-    public String majorArea;
-    public Map<Course, ArrayList<Course>> adjList;
+ import java.util.*;
 
-    public CourseGraph(){
-        adjList = new HashMap<>();
-    }
-
-    public CourseGraph(String majorArea){
-        this.majorArea = majorArea;
-        adjList = new HashMap<>();
-    }
-
-    public void addCourse(Course course){
-        if (!adjList.keySet().contains(course)){
-            adjList.put(course, new ArrayList<Course>());
-        }
-    }
-
-    public void addDirectedEdge(Course course1, Course course2){
-        if (adjList.keySet().contains(course1)){
+ public class CourseGraph {
+     public String majorArea;  // The major or department this graph represents
+     public Map<Course, ArrayList<Course>> adjList;  // Adjacency list mapping a course to its dependents
+ 
+     /**
+      * Constructs a CourseGraph for the given major area.
+      * @param majorArea The name of the major/discipline
+      */
+     public CourseGraph(String majorArea) {
+         this.majorArea = majorArea;
+         this.adjList = new HashMap<>();
+     }
+ 
+     /**
+      * Adds a course to the graph as a node.
+      * If the course already exists, this does nothing.
+      * @param course The course to be added
+      */
+     public void addCourse(Course course) {
+         if (!adjList.containsKey(course)) {
+             adjList.put(course, new ArrayList<Course>());
+         }
+     }
+ 
+     /**
+      * Adds a directed edge from course1 (prerequisite) to course2
+      * If course1 is not already present, it will be added.
+      * @param course1 Prerequisite course
+      * @param course2 Course that has course1 as prerequisite
+      */
+     public void addDirectedEdge(Course course1, Course course2) {
+         if (adjList.containsKey(course1)) {
              adjList.get(course1).add(course2);
-        }
-        else{
-            ArrayList<Course> course1Value = new ArrayList<Course>();
-            course1Value.add(course2);
-            adjList.put(course1, course1Value);
-        }
-    }
-    
-    public ArrayList<Course> getNextCourses(Course course){
-        if (adjList.keySet().contains(course)){
-            return adjList.get(course);
-        }
-        else {
-            return new ArrayList<>();
-        }
-    }
-    
-    // public String showAllMajorCourses(){
-    //     int V = 0;
-    //     for (String course: adjList.keySet()){
-    //         V++;
-    //     }
-    //    Map<String, Boolean> marked = new HashMap<>();
-    //     int[] distTo = new int[V];
-    //     Queue<Integer> graphQueue = new LinkedList<>();
-        
-    //     marked[0] = true;
-    //     distTo[0] = 0;
-    //     graphQueue.add(adjList.keySet().get(0));
-        
-    // }
-
-    public void showAllMajorCourses(){
-        
-        System.out.println("The courses for the " + majorArea + " major (ordered by prerequisite relations)");
-        System.out.println("-------------------------------");
-        
-        
-        for (Course course : adjList.keySet()) {
-            ArrayList<Course> nextCourses = adjList.get(course);
-            if (nextCourses.size() == 0) {
-                System.out.print(course.getID() + "\n");
-            }
-            else {
-                // System.out.println(adjList);
-                String line = "";
-                line += course.getID() + " -> ";
-                for (int i = 0; i < nextCourses.size(); i++) {
-                    line += nextCourses.get(i).getID();
-                    if (i < nextCourses.size() - 1) {
-                        line += ", ";
-                    }
-                }
-                System.out.println(line);
-            }
-            }
-    }    
-            
-        
-        
-    //     Map<Course, Integer> inDegree = new HashMap<>();
-        
-    //     // set every indegree to 0
-    //     for (Course course : adjList.keySet()) {
-    //         inDegree.put(course, 0);
-    //     }
-
-    //     for (Course course : adjList.keySet()) {
-    //         ArrayList<Course> neighbors = adjList.get(course); // courses that this course unlocks
-    //         for (Course neighbor : neighbors) {
-    //             if (inDegree.containsKey(neighbor)) {
-    //                 int current = inDegree.get(neighbor);
-    //                 inDegree.put(neighbor, current + 1);
-    //             } else {
-    //                 inDegree.put(neighbor, 1);
-    //             }
-    //         } 
-    //     }
-    //     // add all courses w indegree 0 to queue (no prereq)
-    //     Queue<Course> queue = new LinkedList<>();
-    //     for (Course course : inDegree.keySet()) {
-    //         if (inDegree.get(course) == 0) {
-    //             queue.add(course);
-    //         }
-    //     }
-
-    //     StringBuilder output = new StringBuilder();
-
-    //     while (!queue.isEmpty()) {
-    //         Course current = queue.poll();
-    //         output.append(current.courseID + ": " + current.name + "\n");
-
-    //         // get all courses that require this as a prerequisite
-    //         ArrayList<Course> neighbors = adjList.get(current);
-
-    //         // for each of those neighbor courses, subtract 1 from their indegree
-    //         for (Course neighbor : neighbors) {
-    //             int newInDegree = inDegree.get(neighbor) - 1;
-    //             inDegree.put(neighbor, newInDegree);
-
-    //             // if a course now has in-degree 0, all prereqs are done so add to queue
-    //             if (newInDegree == 0) {
-    //                 queue.add(neighbor);
-    //             }
-    //         }
-    //     }
-       
-
-    public static void main(String[] args) {
-        CourseGraph graph = new CourseGraph();
-
-        // sample courses
-        // graph.addCourse("CS051");
-        // graph.addCourse("CS054");
-        // graph.addCourse("CS062");
-        // graph.addCourse("CS0140");
-
-        // // add prereqs
-        // graph.addDirectedEdge("CS051", "CS054");
-        // graph.addDirectedEdge("CS054", "CS062");
-        // graph.addDirectedEdge("CS062", "CS0140");
-
-        // System.out.println("Adjacency List:");
-        // for (String course : graph.adjList.keySet()) {
-        //     ArrayList<String> nextCourses = graph.getNextCourses(course);
-        //     System.out.println(course + "->" + nextCourses);
-        // }
-
-        // System.out.println(graph.showAllMajorCourses());
-
-    }
-}
+         } else {
+             ArrayList<Course> course1Value = new ArrayList<>();
+             course1Value.add(course2);
+             adjList.put(course1, course1Value);
+         }
+     }
+ 
+     /**
+      * Returns a list of courses that are directly reachable from the given course.
+      * a.k.a. the courses that depend on the given course as a prerequisite.
+      * @param course The potential prerequisite course
+      * @return List of courses that follow from the input course (empty if course is not a prerequisite for any other course in the major)
+      */
+     public ArrayList<Course> getNextCourses(Course course) {
+         return adjList.getOrDefault(course, new ArrayList<>());
+     }
+ 
+     /**
+      * Prints out all courses in the graph along with the courses that each enables.
+      * Displays the structure of the prerequisite graph for the current major.
+      */
+     public void showAllMajorCourses() {
+         System.out.println("The courses for the " + majorArea + " major (and the following courses each allows you to take)");
+         System.out.println("-------------------------------------");
+ 
+         for (Course course : adjList.keySet()) {
+             ArrayList<Course> nextCourses = adjList.get(course);
+             if (nextCourses.isEmpty()) {
+                 System.out.println(course.getID());
+             } else {
+                 StringBuilder line = new StringBuilder(course.getID() + " -> ");
+                 for (int i = 0; i < nextCourses.size(); i++) {
+                     line.append(nextCourses.get(i).getID());
+                     if (i < nextCourses.size() - 1) {
+                         line.append(", ");
+                     }
+                 }
+                 System.out.println(line);
+             }
+         }
+     }
+ }
