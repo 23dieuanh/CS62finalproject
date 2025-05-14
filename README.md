@@ -138,6 +138,7 @@ This means the system has:
 - Ranked courses that help you ECON/CSCI majors higher (since you selected "major")
 - Prioritized classes at Pomona in the morning or afternoon,
 - And only returned ones you haven't already completed.
+
 This feature is perfect if you're overwhelmed by the number of classes out there and just want a clear, personalized list of what to take. And because the system filters out ineligible courses, you know that everything on the list is actually within reach.
 
 The final feature helps you look ahead: it tells you which major and minor courses you still need to complete, and which of those you're currently eligible to take. This is especially useful when planning future semesters or tracking your graduation progress.
@@ -146,6 +147,7 @@ EasyStration will ask:
 Would you like to see your remaining major classes?
 ```
 If you respond yes, it will return a breakdown by major and minor (if applicable). Here are two example outputs:
+
 **Example 1 - ECON Major**
 ```text
 Remaining courses for ECON:
